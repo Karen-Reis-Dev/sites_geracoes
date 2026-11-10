@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>O Universo e Seus Mistérios</title>
+  <link rel="stylesheet" href="Style.css">
+</head>
+<body>
+
+  <h1>O UNIVERSO E SEUS MISTÉRIOS ⚝</h1>
+
+  <nav class="menu-navegacao">
+    <ul>
+      <li><a href="#introducao">Introdução</a></li>
+      <li><a href="#sobre">Sobre o assunto</a></li>
+      <li><a href="#curiosidades">Três curiosidades</a></li>
+      <li><a href="#interativo">Área interativa</a></li>
+      <li><a href="#links">Links para saber mais</a></li>
+    </ul>
+  </nav>
+
+  <section id="introducao">
+    <p>O universo é um lugar enorme e cheio de mistérios que despertam a curiosidade das pessoas.<br>
+     Ele é formado por planetas, estrelas, galáxias, cometas e muitos outros corpos celestes. <br>
+     Desde a antiguidade, os seres humanos observam o céu e tentam descobrir como tudo surgiu e se existe vida em outros planetas.</p>
+  </section>
+
+  <section id="sobre">
+    <h2 class="sub-a">Sobre o assunto</h2>
+    <p>A astronomia é a ciência que estuda o universo e seus elementos.<br>
+      Com a ajuda de telescópios e sondas espaciais, os cientistas conseguem explorar lugares muito distantes e aprender mais sobre o espaço.<br>
+      Mesmo com tantos avanços tecnológicos, ainda existem muitas perguntas sem respostas sobre a origem e o futuro do universo.</p>
+  </section>
+
+  <section id="curiosidades">
+    <h2 class="sub-b">Três curiosidades</h2>
+    <ul>
+      <li>Primeira curiosidade: A luz do Sol demora aproximadamente 8 minutos e 20 segundos para chegar à Terra.</li>
+      <li>Segunda curiosidade: Júpiter é o maior planeta do Sistema Solar e possui dezenas de luas conhecidas.</li>
+      <li>Terceira curiosidade: O universo tem aproximadamente 13,8 bilhões de anos, segundo as estimativas científicas atuais.</li>
+    </ul>
+  </section>
+
+  <!-- ÁREA INTERATIVA COM JAVASCRIPT -->
+  <section id="interativo" class="painel">
+    <h2 class="sub-c">Área interativa (JavaScript)</h2>
+
+    <p>Visitas registradas neste navegador:
+      <span id="contador-visitas">0</span>
+    </p>
+
+    <h3 style="color:#07eaff;">Descubra um fato aleatório do universo</h3>
+    <button class="btn" id="btn-fato">Gerar fato astronômico</button>
+    <p id="saida-fatos"></p>
+
+    <h3 style="color:#07eaff;">Calculadora de distância da luz</h3>
+    <p>
+      Quantos anos-luz deseja percorrer?
+      <input type="number" id="anos-luz" value="1" min="0" step="0.5">
+      <button class="btn" id="btn-calcular">Calcular tempo</button>
+    </p>
+    <p id="resultado-sonda"></p>
+  </section>
+
+  <section id="links">
+    <h2 class="sub-c">Links para saber mais</h2>
+    <p><a href="https://cosmolapse.com/pt" target="_blank" rel="noopener">Visitar o primeiro site para saber mais!</a></p>
+    <p><a href="https://www.nasa.gov/" target="_blank" rel="noopener">Visitar o segundo site para saber mais!</a></p>
+    <p><a href="https://www.gov.br/aeb/pt-br" target="_blank" rel="noopener">Visitar o terceiro site para saber mais!</a></p>
+  </section>
+
+  <button class="btn" id="btn-topo" title="Voltar ao topo">↑</button>
+
+  <script>
+    // ===== 1. Contador de visitas (localStorage) =====
+    const contador = document.getElementById('contador-visitas');
+    let visitas = Number(localStorage.getItem('visitasUniverso')) || 0;
+    visitas++;
+    localStorage.setItem('visitasUniverso', visitas);
+    contador.textContent = visitas;
+
+    // ===== 2. Gerador de fatos astronômicos =====
+    const fatos = [
+      "Vênus é o planeta mais quente do Sistema Solar, com cerca de 465 °C na superfície.",
+      "A Via Láctea contém cerca de 200 bilhões de estrelas.",
+      "Um dia em Júpiter dura apenas cerca de 10 horas.",
+      "A estrela mais próxima do Sol, Proxima Centauri, está a 4,24 anos-luz da Terra.",
+      "Buracos negros podem ter massa de milhões de vezes a do Sol.",
+      "A NASA já enviou sondas que saíram do Sistema Solar, como a Voyager 1.",
+      "Saturno é tão denso quanto a água: ele flutuaria em um oceano gigante."
+    ];
+
+    const botaoFato = document.getElementById('btn-fato');
+    const saidaFatos = document.getElementById('saida-fatos');
+
+    botaoFato.addEventListener('click', () => {
+      const indice = Math.floor(Math.random() * fatos.length);
+      saidaFatos.textContent = "🔭 " + fatos[indice];
+    });
+
+    // ===== 3. Calculadora de distância em anos-luz =====
+    const botaoCalcular = document.getElementById('btn-calcular');
+    const resultadoSonda = document.getElementById('resultado-sonda');
+    const inputAnosLuz = document.getElementById('anos-luz');
+
+    botaoCalcular.addEventListener('click', () => {
+      const anosLuz = parseFloat(inputAnosLuz.value);
+
+      if (isNaN(anosLuz) || anosLuz < 0) {
+        resultadoSonda.textContent = "⚠️ Digite um valor válido (número positivo).";
+        return;
+      }
+
+      // Velocidade da luz: ~300.000 km/s
+      const km = anosLuz * 9.461e12; // 1 ano-luz em km
+      resultadoSonda.textContent =
+        `Viajando na velocidade da luz, você percorreria ${anosLuz} ano(s)-luz ` +
+        `(${km.toLocaleString('pt-BR')} km) em exatamente ${anosLuz} ano(s). 🚀`;
+    });
+
+    // ===== 4. Animação de revelação das seções ao rolar =====
+    const secoes = document.querySelectorAll('section');
+    const observador = new IntersectionObserver((entradas) => {
+      entradas.forEach(entrada => {
+        if (entrada.isIntersecting) {
+          entrada.target.classList.add('visivel');
+        }
+      });
+    }, { threshold: 0.15 });
+
+    secoes.forEach(secao => observador.observe(secao));
+
+    // ===== 5. Botão voltar ao topo =====
+    const btnTopo = document.getElementById('btn-topo');
+
+    window.addEventListener('scroll', () => {
+      btnTopo.style.display = window.scrollY > 300 ? 'block' : 'none';
+    });
+
+    btnTopo.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+
+</body>
+</html>
